@@ -1,7 +1,5 @@
-const UP = "u"
-const DOWN = "d"
-const LEFT = "l"
-const RIGHT = "r"
+import { Bullet } from "./bullet.mjs"
+import { LEFT, RIGHT, UP, DOWN } from "./dir.mjs"
 
 class Character {
   #x = 0
@@ -13,13 +11,21 @@ class Character {
   #color
   #size
   #isEnemy
-  constructor(size, speed, color, health, isEnemy, maxPos) {
+  #bulletDamage 
+  #bulletSpeed
+  #bulletSize
+  #bulletColor 
+  constructor(size, speed, color, health, isEnemy, maxPos, bulletDamage, bulletSpeed, bulletSize, bulletColor) {
     this.#size = size
     this.#speed = speed
     this.#color = color
     this.#health = health
     this.#isEnemy = isEnemy
     this.#maxPos = maxPos
+    this.#bulletDamage  = bulletDamage  
+    this.#bulletSpeed = bulletSpeed 
+    this.#bulletSize =  bulletSize 
+    this.#bulletColor  = bulletColor  
   }
   moveUp = function () {
     this.#o = UP
@@ -66,6 +72,10 @@ class Character {
   }
   get orientation() {
     return this.#o
+  }
+
+  fire = function () {
+    return new Bullet(this.#x, this.#y, this.#o, this.#isEnemy, this.#bulletDamage, this.#bulletSpeed, this.#bulletSize, this.#bulletColor )
   }
 }
 

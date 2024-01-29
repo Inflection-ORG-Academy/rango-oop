@@ -9,6 +9,10 @@ const gameConfig = {
   playerColor: "red",
   playerSpeed: 10,
   playerHealth: 100,
+  playerBulletDamage : 5,
+  playerBulletSpeed : 3,
+  playerBulletSize : 10,
+  playerBulletColor : "blue",
 
   kilbishSize: 30,
   kilbishColor: "green",
@@ -21,15 +25,18 @@ const gameConfig = {
   shakaHealth: 10,
 }
 
-const rango = new Character(gameConfig.playerSize, gameConfig.playerSpeed, gameConfig.playerColor, gameConfig.playerHealth, false, gameConfig.canavsSize)
-
-const enemyArray = [
-  new Character(gameConfig.playerSize, gameConfig.playerSpeed, gameConfig.playerColor, gameConfig.playerHealth, true),
-  new Character(gameConfig.playerSize, gameConfig.playerSpeed, gameConfig.playerColor, gameConfig.playerHealth, true),
-  new Character(gameConfig.playerSize, gameConfig.playerSpeed, gameConfig.playerColor, gameConfig.playerHealth, true),
-  new Character(gameConfig.playerSize, gameConfig.playerSpeed, gameConfig.playerColor, gameConfig.playerHealth, true),
-  new Character(gameConfig.playerSize, gameConfig.playerSpeed, gameConfig.playerColor, gameConfig.playerHealth, true),
-]
+const rango = new Character(
+  gameConfig.playerSize,
+  gameConfig.playerSpeed, 
+  gameConfig.playerColor, 
+  gameConfig.playerHealth, 
+  false, 
+  gameConfig.canavsSize,
+  gameConfig.playerBulletDamage,
+  gameConfig.playerBulletSpeed,
+  gameConfig.playerBulletSize,
+  gameConfig.playerBulletColor
+  )
 
 const rangoGame = new Game(gameConfig, rango)
 rangoGame.run()
