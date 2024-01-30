@@ -11,21 +11,24 @@ class Character {
   #color
   #size
   #isEnemy
-  #bulletDamage 
+  #bulletDamage
   #bulletSpeed
   #bulletSize
-  #bulletColor 
-  constructor(size, speed, color, health, isEnemy, maxPos, bulletDamage, bulletSpeed, bulletSize, bulletColor) {
+  #bulletColor
+  constructor(x, y, o, size, speed, color, health, isEnemy, maxPos, bulletDamage, bulletSpeed, bulletSize, bulletColor) {
+    this.#x = x
+    this.#y = y
+    this.#o = o
     this.#size = size
     this.#speed = speed
     this.#color = color
     this.#health = health
     this.#isEnemy = isEnemy
     this.#maxPos = maxPos
-    this.#bulletDamage  = bulletDamage  
-    this.#bulletSpeed = bulletSpeed 
-    this.#bulletSize =  bulletSize 
-    this.#bulletColor  = bulletColor  
+    this.#bulletDamage = bulletDamage
+    this.#bulletSpeed = bulletSpeed
+    this.#bulletSize = bulletSize
+    this.#bulletColor = bulletColor
   }
   moveUp = function () {
     this.#o = UP
@@ -75,7 +78,7 @@ class Character {
   }
 
   fire = function () {
-    return new Bullet(this.#x, this.#y, this.#o, this.#isEnemy, this.#bulletDamage, this.#bulletSpeed, this.#bulletSize, this.#bulletColor )
+    return new Bullet(this.#x, this.#y, this.#o, this.#isEnemy, this.#bulletDamage, this.#bulletSpeed, this.#bulletSize, this.#bulletColor)
   }
 }
 
