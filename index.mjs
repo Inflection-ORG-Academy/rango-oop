@@ -6,16 +6,17 @@ const gameConfig = {
   canavsSize: 600,
   canvasId: "canvas",
 
-  playerSize: 50,
+  playerSize: 30,
   playerColor: "red",
   playerSpeed: 10,
   playerHealth: 100,
   playerBulletDamage: 5,
   playerBulletSpeed: 3,
-  playerBulletSize: 10,
+  playerBulletSize: 8,
   playerBulletColor: "blue",
 
   maxEnemies: 10,
+  enemyFiringRate: 2,
 
   kilbishSize: 30,
   kilbishColor: "green",
@@ -28,11 +29,11 @@ const gameConfig = {
 
   shakaSize: 25,
   shakaColor: "orange",
-  shakaSpeed: 10,
+  shakaSpeed: 2,
   shakaHealth: 10,
   shakaBulletDamage: 3,
   shakaBulletSpeed: 3,
-  shakaBulletSize: 5,
+  shakaBulletSize: 8,
   shakaBulletColor: "yellow",
 }
 

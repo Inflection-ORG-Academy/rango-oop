@@ -6,7 +6,8 @@ class Game {
   #canvasElement
   #canvas
   player
-  #bulletArray = []
+  #playerBulletArray = []
+  #enemyBulletArray = []
   #enemyArray = []
   constructor(config, player) {
     this.#gameConfig = config
@@ -19,7 +20,8 @@ class Game {
   }
   #draw = function () {
     this.#canvas.clearRect(0, 0, this.#gameConfig.canavsSize, this.#gameConfig.canavsSize)
-    this.#bulletArray.forEach((bullet) => { this.#drawBullet(bullet.posX, bullet.posY, bullet.size, bullet.color) })
+    this.#playerBulletArray.forEach((bullet) => { this.#drawBullet(bullet.posX, bullet.posY, bullet.size, bullet.color) })
+    this.#enemyBulletArray.forEach((bullet) => { this.#drawBullet(bullet.posX, bullet.posY, bullet.size, bullet.color) })
     this.#enemyArray.forEach((enemy) => {
       this.#drawCharacter(enemy.posX, enemy.posY, enemy.size, enemy.color, enemy.orientation)
     })
@@ -76,15 +78,17 @@ class Game {
     } else if (event.key === 'w') {
       this.player.moveUp()
     } else if (event.key === ' ') {
-      this.#bulletArray.push(this.player.fire())
-      console.log(this.#bulletArray)
+      this.#playerBulletArray.push(this.player.fire())
+      console.log(this.#playerBulletArray)
     }
   }
 
   #removeBullet = function () {
-    this.#bulletArray.forEach((bullet) => {
-      // check if bullet is outside of canavs 
-      // then delete that bullet
+    this.#playerBulletArray = this.#playerBulletArray.filter((bullet) => {
+      return (bullet.posX > 0 && bullet.posY > 0 && bullet.posX < this.#gameConfig.canavsSize && bullet.posY < this.#gameConfig.canavsSize)
+    })
+    this.#enemyBulletArray = this.#enemyBulletArray.filter((bullet) => {
+      return (bullet.posX > 0 && bullet.posY > 0 && bullet.posX < this.#gameConfig.canavsSize && bullet.posY < this.#gameConfig.canavsSize)
     })
   }
 
@@ -105,29 +109,77 @@ class Game {
     let o = oList[Math.floor(Math.random() * oList.length)]
 
     if (this.#enemyArray.length < this.#gameConfig.maxEnemies) {
-      this.#enemyArray.push(
-        new Character(
-          x, y, o,
-          this.#gameConfig.shakaSize,
-          this.#gameConfig.shakaSpeed,
-          this.#gameConfig.shakaColor,
-          this.#gameConfig.shakaHealth,
-          true,
-          this.#gameConfig.canavsSize,
-          this.#gameConfig.shakaBulletDamage,
-          this.#gameConfig.shakaBulletSpeed,
-          this.#gameConfig.shakaBulletSize,
-          this.#gameConfig.shakaBulletColor,
+      if (Math.random() * 10 < 8) {
+        this.#enemyArray.push(
+          new Character(
+            x, y, o,
+            this.#gameConfig.shakaSize,
+            this.#gameConfig.shakaSpeed,
+            this.#gameConfig.shakaColor,
+            this.#gameConfig.shakaHealth,
+            true,
+            this.#gameConfig.canavsSize,
+            this.#gameConfig.shakaBulletDamage,
+            this.#gameConfig.shakaBulletSpeed,
+            this.#gameConfig.shakaBulletSize,
+            this.#gameConfig.shakaBulletColor,
+          )
         )
-      )
+      } else {
+        this.#enemyArray.push(
+          new Character(
+            x, y, o,
+            this.#gameConfig.kilbishSize,
+            this.#gameConfig.kilbishSpeed,
+            this.#gameConfig.kilbishColor,
+            this.#gameConfig.kilbishHealth,
+            true,
+            this.#gameConfig.canavsSize,
+            this.#gameConfig.kilbishBulletDamage,
+            this.#gameConfig.kilbishBulletSpeed,
+            this.#gameConfig.kilbishBulletSize,
+            this.#gameConfig.kilbishBulletColor,
+          )
+        )
+      }
       console.log(this.#enemyArray)
     }
+  }
+  #enemyMover = function () {
+    const moveList = [4, 1, 2, 3]
+    this.#enemyArray.forEach((enemy) => {
+      const rand = Math.random() * 100
+      const randIndex = Math.floor(Math.random() * moveList.length)
+      if (rand < 5) {
+        if (moveList[randIndex] == 1) {
+          enemy.moveUp()
+        } else if (moveList[randIndex] == 2) {
+          enemy.moveLeft()
+        } else if (moveList[randIndex] == 3) {
+          enemy.moveDown()
+        } else if (moveList[randIndex] == 4) {
+          enemy.moveRight()
+        }
+      }
+    })
+  }
+
+  #enemyFire = function () {
+    const rand = Math.random() * 100
+    this.#enemyArray.forEach((enemy) => {
+      if (rand < this.#gameConfig.enemyFiringRate) {
+        this.#enemyBulletArray.push(enemy.fire())
+      }
+    })
   }
 
   run = function () {
     setInterval(() => {
       this.#enemyManager()
-      this.#bulletArray.forEach((bullet) => { bullet.move() })
+      this.#enemyMover()
+      this.#enemyFire()
+      this.#playerBulletArray.forEach((bullet) => { bullet.move() })
+      this.#enemyBulletArray.forEach((bullet) => { bullet.move() })
       this.#removeBullet()
       this.#draw()
     }, 20)
