@@ -85,9 +85,15 @@ class Game {
 
   #removeBullet = function () {
     this.#playerBulletArray = this.#playerBulletArray.filter((bullet) => {
+      if (bullet.markForRemoval) {
+        return false
+      }
       return (bullet.posX > 0 && bullet.posY > 0 && bullet.posX < this.#gameConfig.canavsSize && bullet.posY < this.#gameConfig.canavsSize)
     })
     this.#enemyBulletArray = this.#enemyBulletArray.filter((bullet) => {
+      if (bullet.markForRemoval) {
+        return false
+      }
       return (bullet.posX > 0 && bullet.posY > 0 && bullet.posX < this.#gameConfig.canavsSize && bullet.posY < this.#gameConfig.canavsSize)
     })
   }
@@ -173,15 +179,49 @@ class Game {
     })
   }
 
+  #enemyCollision = function () {
+    this.#playerBulletArray.forEach((bullet) => {
+      this.#enemyArray.forEach((enemy) => {
+        if ((Math.abs(bullet.posX - enemy.posX) < enemy.size / 2 + bullet.size / 2) && (Math.abs(bullet.posY - enemy.posY) < enemy.size / 2 + bullet.size / 2)) {
+          enemy.damage(bullet.damage)
+          bullet.markForRemoval = true
+          console.log(enemy)
+        }
+      })
+    })
+  }
+
+  #playerCollision = function () {
+    this.#enemyBulletArray.forEach((bullet) => {
+      if ((Math.abs(bullet.posX - this.player.posX) < this.player.size / 2 + bullet.size / 2) && (Math.abs(bullet.posY - this.player.posY) < this.player.size / 2 + bullet.size / 2)) {
+        this.player.damage(bullet.damage)
+        bullet.markForRemoval = true
+        console.log(this.player)
+      }
+    })
+  }
+
+  #removeEnemy = function () {
+    this.#enemyArray = this.#enemyArray.filter((enemy) => {
+      return enemy.health > 0
+    })
+  }
+
   run = function () {
-    setInterval(() => {
+    const interval = setInterval(() => {
       this.#enemyManager()
       this.#enemyMover()
       this.#enemyFire()
       this.#playerBulletArray.forEach((bullet) => { bullet.move() })
       this.#enemyBulletArray.forEach((bullet) => { bullet.move() })
+      this.#enemyCollision();
+      this.#playerCollision();
       this.#removeBullet()
+      this.#removeEnemy()
       this.#draw()
+      if (this.player.health <= 0) {
+        clearInterval(interval)
+      }
     }, 20)
   }
 }

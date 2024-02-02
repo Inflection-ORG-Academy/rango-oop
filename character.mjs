@@ -77,6 +77,10 @@ class Character {
     return this.#o
   }
 
+  damage = function (damage) {
+    this.#health -= damage
+  }
+
   fire = function () {
     return new Bullet(this.#x, this.#y, this.#o, this.#isEnemy, this.#bulletDamage, this.#bulletSpeed, this.#bulletSize, this.#bulletColor)
   }

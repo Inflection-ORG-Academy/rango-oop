@@ -9,7 +9,8 @@ class Bullet {
     #color
     #isEnemy
     #speed
-    constructor(x, y, dir, isEnemy, damage, speed, size, color){
+    #markForRemoval = false
+    constructor(x, y, dir, isEnemy, damage, speed, size, color) {
         this.#x = x
         this.#y = y
         this.#dir = dir
@@ -19,33 +20,40 @@ class Bullet {
         this.#isEnemy = isEnemy
         this.#speed = speed
     }
-    get posX(){
+    get posX() {
         return this.#x
     }
-    get posY(){
+    get posY() {
         return this.#y
     }
-    get damage(){
+    get damage() {
         return this.#damage
     }
-    get size(){
+    get size() {
         return this.#size
     }
-    get color(){
+    get color() {
         return this.#color
     }
 
+    get markForRemoval() {
+        return this.#markForRemoval
+    }
+    set markForRemoval(val) {
+        this.#markForRemoval = val
+    }
+
     move = function () {
-        if( this.#dir === UP){
+        if (this.#dir === UP) {
             this.#y -= this.#speed
-        }else if( this.#dir === DOWN){
+        } else if (this.#dir === DOWN) {
             this.#y += this.#speed
-        }else if( this.#dir === LEFT){
+        } else if (this.#dir === LEFT) {
             this.#x -= this.#speed
-        }else if( this.#dir === RIGHT){
+        } else if (this.#dir === RIGHT) {
             this.#x += this.#speed
         }
     }
 }
 
-export {Bullet}
+export { Bullet }
