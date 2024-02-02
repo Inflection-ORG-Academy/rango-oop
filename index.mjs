@@ -23,8 +23,8 @@ const gameConfig = {
   kilbishSpeed: 2,
   kilbishHealth: 50,
   kilbishBulletDamage: 7,
-  kilbishBulletSpeed: 5,
-  kilbishBulletSize: 8,
+  kilbishBulletSpeed: 1,
+  kilbishBulletSize: 20,
   kilbishBulletColor: "orange",
 
   shakaSize: 25,

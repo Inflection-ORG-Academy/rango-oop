@@ -42,7 +42,9 @@ class Bullet {
     set markForRemoval(val) {
         this.#markForRemoval = val
     }
-
+    reduceBulletDamage = function (d) {
+        this.#damage -= d
+    }
     move = function () {
         if (this.#dir === UP) {
             this.#y -= this.#speed

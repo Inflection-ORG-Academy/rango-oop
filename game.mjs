@@ -196,8 +196,25 @@ class Game {
       if ((Math.abs(bullet.posX - this.player.posX) < this.player.size / 2 + bullet.size / 2) && (Math.abs(bullet.posY - this.player.posY) < this.player.size / 2 + bullet.size / 2)) {
         this.player.damage(bullet.damage)
         bullet.markForRemoval = true
-        console.log(this.player)
       }
+    })
+  }
+
+  #bulletCollision = function () {
+    this.#playerBulletArray.forEach((pb) => {
+      this.#enemyBulletArray.forEach((eb) => {
+        if ((Math.abs(pb.posX - eb.posX) < eb.size / 2 + pb.size / 2) && (Math.abs(pb.posY - eb.posY) < pb.size / 2 + eb.size / 2)) {
+          const pbd = pb.damage
+          pb.reduceBulletDamage(eb.damage)
+          eb.reduceBulletDamage(pbd)
+          if (pb.damage <= 0) {
+            pb.markForRemoval = true
+          }
+          if (eb.damage <= 0) {
+            eb.markForRemoval = true
+          }
+        }
+      })
     })
   }
 
@@ -216,6 +233,7 @@ class Game {
       this.#enemyBulletArray.forEach((bullet) => { bullet.move() })
       this.#enemyCollision();
       this.#playerCollision();
+      this.#bulletCollision()
       this.#removeBullet()
       this.#removeEnemy()
       this.#draw()
